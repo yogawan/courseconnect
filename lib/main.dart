@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'screen/splash/splash_screen.dart';
+import 'screen/admin_splash/splash_screen.dart';
 
 void main() {
   runApp(MyApp());
@@ -10,7 +11,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: SplashScreen(),
+      home: AdminSplashScreen(),
     );
   }
 }
