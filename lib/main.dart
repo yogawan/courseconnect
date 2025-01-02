@@ -1,6 +1,5 @@
+import 'package:courseconnect/screen/admin_splash/admin_splash_screen.dart';
 import 'package:flutter/material.dart';
-import 'screen/splash/splash_screen.dart';
-import 'screen/admin_splash/splash_screen.dart';
 
 void main() {
   runApp(MyApp());

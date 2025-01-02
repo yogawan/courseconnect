@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../admin_dashboard/admin_detail_screen.dart';
-import '../auth/login_screen.dart';
+import '../admin_auth/admin_login_screen.dart';
 
 class AdminCourseScreen extends StatefulWidget {
   final String username;
@@ -49,7 +49,7 @@ class _AdminCourseScreenState extends State<AdminCourseScreen> {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-        builder: (context) => LoginScreen(),
+        builder: (context) => AdminLoginScreen(),
       ),
     );
   }
