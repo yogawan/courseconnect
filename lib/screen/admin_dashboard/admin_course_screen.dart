@@ -1,5 +1,6 @@
+import 'package:courseconnect/screen/admin_dashboard/admin_tambah_course.dart';
+import 'package:courseconnect/screen/admin_dashboard/admin_ubah_course.dart';
 import 'package:flutter/material.dart';
-import '../admin_dashboard/admin_detail_screen.dart';
 import '../admin_auth/admin_login_screen.dart';
 
 class AdminCourseScreen extends StatefulWidget {
@@ -45,6 +46,14 @@ class _AdminCourseScreenState extends State<AdminCourseScreen> {
     ),
   ];
 
+  List<Product> filteredProducts = [];
+
+  @override
+  void initState() {
+    super.initState();
+    filteredProducts = products;
+  }
+
   void _logout() {
     Navigator.pushReplacement(
       context,
@@ -54,6 +63,25 @@ class _AdminCourseScreenState extends State<AdminCourseScreen> {
     );
   }
 
+  void _search(String query) {
+    setState(() {
+      filteredProducts = products.where((product) {
+        final nameLower = product.name.toLowerCase();
+        final descriptionLower = product.description.toLowerCase();
+        final searchLower = query.toLowerCase();
+        return nameLower.contains(searchLower) ||
+            descriptionLower.contains(searchLower) ||
+            product.price.toString().contains(query);
+      }).toList();
+    });
+  }
+
+  void _deleteProduct(int id) {
+    setState(() {
+      products.removeWhere((product) => product.id == id);
+      filteredProducts = products;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +96,7 @@ class _AdminCourseScreenState extends State<AdminCourseScreen> {
         leading: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Image.asset(
-            'assets/logo.png', 
+            'assets/logo.png',
             fit: BoxFit.contain,
           ),
         ),
@@ -83,40 +111,29 @@ class _AdminCourseScreenState extends State<AdminCourseScreen> {
       body: ListView(
         padding: const EdgeInsets.all(16.0),
         children: [
-          Row(
-            children: <Widget>[
-              CircleAvatar(
-                radius: 30,
-                backgroundImage: Image.network(
-                  "https://ui-avatars.com/api/?name=${widget.username}?size=100",
-                ).image,
-              ),
-              const SizedBox(width: 10),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      widget.username,
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const Text(
-                      'Selamat Pagi',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
+          const Text(
+            'Admin Dashboard',
+            style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+            ),
           ),
           const SizedBox(height: 20),
-          ...products.map((product) {
+          TextField(
+            onChanged: _search,
+            decoration: InputDecoration(
+              hintText: 'Search by course name or price',
+              filled: true,
+              fillColor: Colors.white,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(1000),
+                borderSide: BorderSide.none,
+              ),
+              prefixIcon: const Icon(Icons.search),
+            ),
+          ),
+          const SizedBox(height: 20),
+          ...filteredProducts.map((product) {
             return Container(
               margin: const EdgeInsets.symmetric(vertical: 10),
               decoration: BoxDecoration(
@@ -171,17 +188,66 @@ class _AdminCourseScreenState extends State<AdminCourseScreen> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => AdminDetailScreen(
+                              builder: (context) => AdminUbahCourse(
                                 title: product.name,
                                 description: product.description,
+                                price: product.price.toDouble(),
                               ),
                             ),
                           );
                         },
                         child: const Text(
-                          'Lihat Course',
+                          'Ubah',
                           style: TextStyle(
                             color: Colors.white,
+                            fontSize: 16,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    SizedBox(
+                      width: double.infinity,
+                      height: 48,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(1000),
+                            side: BorderSide(color: Colors.black),
+                          ),
+                        ),
+                        onPressed: () {
+                          // Implement course overview functionality here
+                        },
+                        child: const Text(
+                          'Course Overview',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 16,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    SizedBox(
+                      width: double.infinity,
+                      height: 48,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(1000),
+                            side: BorderSide(color: const Color.fromARGB(255, 0, 0, 0)),
+                          ),
+                        ),
+                        onPressed: () {
+                          _deleteProduct(product.id);
+                        },
+                        child: const Text(
+                          'Delete',
+                          style: TextStyle(
+                            color: Colors.red,
                             fontSize: 16,
                           ),
                         ),
@@ -194,6 +260,19 @@ class _AdminCourseScreenState extends State<AdminCourseScreen> {
           }).toList(),
         ],
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => AdminTambahCourse(),
+            ),
+          );
+        },
+        backgroundColor: const Color(0xFF000015),
+        child: const Icon(Icons.add, color: Colors.white),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 }
