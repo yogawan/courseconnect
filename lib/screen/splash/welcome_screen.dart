@@ -26,7 +26,7 @@ class WelcomeScreen extends StatelessWidget {
             child: Column(
               children: [
                 Text(
-                  'Selamat datang di CourseConnect',
+                  'Selamat datang di CourseConnect..',
                   style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
