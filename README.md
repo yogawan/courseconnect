@@ -1,5 +1,8 @@
 # courseconnect
 
+Figma Design:
+![design](thumb.png)
+
 A new Flutter project.
 
 ## Getting Started
