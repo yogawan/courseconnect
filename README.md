@@ -1,8 +1,12 @@
 # courseconnect
 
+Preview Application:
+
+![preview](preview.png)
+
 Figma Design:
 
-![design](thumb.png)
+![figma](figma.png)
 
 A new Flutter project.
 
